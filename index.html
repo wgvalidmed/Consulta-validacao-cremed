@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Administrativo - Consultas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f0f0f0;
+    }
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button, select {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    #output {
+      background: #e6ffe6;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Adicionar Consulta</h2>
+    <input type="text" id="nome" placeholder="Nome do paciente">
+    <input type="date" id="data">
+    <select id="status">
+      <option value="Pendente">Pendente</option>
+      <option value="Concluída">Concluída</option>
+      <option value="Cancelada">Cancelada</option>
+    </select>
+    <button onclick="gerarConsulta()">Gerar Código e Link</button>
+    <div id="output"></div>
+  </div>
+  <script>
+    function gerarCodigo() {
+      return Math.random().toString(36).substring(2, 10).toUpperCase();
+    }
+
+    function gerarConsulta() {
+      const nome = document.getElementById("nome").value.trim();
+      const data = document.getElementById("data").value;
+      const status = document.getElementById("status").value;
+      const codigo = gerarCodigo();
+
+      if (!nome || !data) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      const consulta = { nome, data, status };
+      localStorage.setItem(codigo, JSON.stringify(consulta));
+
+      const link = `https://cremed.github.io/consultas-validacao/validador.html?codigo=${codigo}`;
+
+      document.getElementById("output").innerHTML = `
+        ✅ Consulta salva com sucesso!<br><br>
+        🧾 Código: <strong>${codigo}</strong><br>
+        🔗 Link de validação: <a href="${link}" target="_blank">${link}</a>
+      `;
+    }
+  </script>
+</body>
+</html>

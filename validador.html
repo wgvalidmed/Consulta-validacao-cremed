@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Validador de Consulta</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f8f8f8;
+    }
+    .container {
+      background: #fff;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Validação de Consulta</h2>
+    <div id="resultado"></div>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const codigo = params.get("codigo");
+    const resultado = document.getElementById("resultado");
+
+    if (codigo) {
+      const consultaJSON = localStorage.getItem(codigo);
+      if (consultaJSON) {
+        const consulta = JSON.parse(consultaJSON);
+        resultado.innerHTML = \`
+          ✅ <strong>Código válido</strong><br><br>
+          🧑 Paciente: \${consulta.nome}<br>
+          📅 Data: \${consulta.data}<br>
+          📌 Status: \${consulta.status}
+        \`;
+      } else {
+        resultado.innerHTML = \`❌ Código inválido ou não encontrado.\`;
+      }
+    } else {
+      resultado.innerHTML = \`⚠️ Nenhum código informado na URL.\`;
+    }
+  </script>
+</body>
+</html>
